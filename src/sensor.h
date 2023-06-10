@@ -21,11 +21,12 @@
 #endif
 
 Bsec iaqSensor;
+String sensorDataJson; // FIXME sloppy scope
 
 void initBsecSensor(void);
 void checkIaqSensorStatus(void);
 void errLeds(void);
-String getBsecSensorInfo(void);
+String updateSensorData(void);
 
 void initBsecSensor(void)
 {
@@ -50,6 +51,11 @@ void initBsecSensor(void)
 
     iaqSensor.updateSubscription(sensorList, 13, BSEC_SAMPLE_RATE_LP);
     checkIaqSensorStatus();
+
+    // FIXME this is kind of bullshit too
+    StaticJsonDocument<500> sensorStart;
+    sensorStart["error"] = "No data.";
+    serializeJson(sensorStart, sensorDataJson);
 }
 
 void checkIaqSensorStatus(void)
@@ -65,6 +71,7 @@ void checkIaqSensorStatus(void)
         else
         {
             Serial.println("BSEC warning code : " + String(iaqSensor.bsecStatus));
+            statusBlink(CRGB::Yellow, abs(iaqSensor.bsecStatus));
         }
     }
 
@@ -79,32 +86,33 @@ void checkIaqSensorStatus(void)
         else
         {
             Serial.println("BME68X warning code : " + String(iaqSensor.bme68xStatus));
+            statusBlink(CRGB::Yellow, abs(iaqSensor.bme68xStatus));
         }
     }
 }
 
-String getBsecSensorInfo(void)
+String updateSensorData(void)
 {
-    StaticJsonDocument<500> data;
+    StaticJsonDocument<500> sensorData;
 
-    data["iaq"] = iaqSensor.iaq;
-    data["iaq_accuracy"] = iaqSensor.iaqAccuracy;
-    data["static_iaq"] = iaqSensor.staticIaq;
-    data["co2_equivalent"] = iaqSensor.co2Equivalent;
-    data["breath_voc_equivalent"] = iaqSensor.breathVocEquivalent;
-    data["temperature"]["raw"] = iaqSensor.rawTemperature;
-    data["temperature"]["comp"] = iaqSensor.temperature;
-    data["pressure"] = iaqSensor.pressure;
-    data["humidity"]["raw"] = iaqSensor.rawHumidity;
-    data["humidity"]["comp"] = iaqSensor.humidity;
-    data["gas"] = iaqSensor.gasPercentage;
-    data["status"]["stab"] = iaqSensor.stabStatus;
-    data["status"]["run_in"] = iaqSensor.runInStatus;
-    data["time"]["now"] = getTime();
-    data["time"]["uptime"] = (millis() / 1000);
+    sensorData["iaq"] = iaqSensor.iaq;
+    sensorData["iaq_accuracy"] = iaqSensor.iaqAccuracy;
+    sensorData["static_iaq"] = iaqSensor.staticIaq;
+    sensorData["co2_equivalent"] = iaqSensor.co2Equivalent;
+    sensorData["breath_voc_equivalent"] = iaqSensor.breathVocEquivalent;
+    sensorData["temperature"]["raw"] = iaqSensor.rawTemperature;
+    sensorData["temperature"]["comp"] = iaqSensor.temperature;
+    sensorData["pressure"] = iaqSensor.pressure;
+    sensorData["humidity"]["raw"] = iaqSensor.rawHumidity;
+    sensorData["humidity"]["comp"] = iaqSensor.humidity;
+    sensorData["gas"] = iaqSensor.gasPercentage;
+    sensorData["status"]["stab"] = iaqSensor.stabStatus;
+    sensorData["status"]["run_in"] = iaqSensor.runInStatus;
+    sensorData["time"]["now"] = getTime();
+    sensorData["time"]["uptime"] = (millis() / 1000);
 
     String response;
-    serializeJson(data, response);
+    serializeJson(sensorData, response);
 
     return response;
 }

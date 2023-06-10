@@ -14,9 +14,12 @@
 #include "leds.h"
 #include "logger.h"
 #include "sensor.h"
+#include "webserver.h"
 
 // CONFIG
 #include "wifi_config.h"
+
+#define SENSOR_DATA_TO_SERIAL false
 
 // function declarations
 void setup();
@@ -25,10 +28,13 @@ void loop();
 void setup()
 {
     Serial.begin(115200);
+
     initLeds();
 
     // connect to wifi network or blink error
     connectToLocalNetwork();
+
+    setupWebServer();
 
     initBsecSensor();
 }
@@ -37,16 +43,18 @@ void loop()
 {
     if (iaqSensor.run())
     {
-        Serial.println(getBsecSensorInfo());
+        sensorDataJson = updateSensorData();
+        if (SENSOR_DATA_TO_SERIAL)
+        {
+            Serial.println(sensorDataJson);
+            statusBlink(CRGB::SeaGreen, 1);
+        }
         // logSdCard(); // FIXME
-        statusBlink(CRGB::SeaGreen, 1);
     }
     else
     {
         checkIaqSensorStatus();
     }
-
-    delay(1000);
 }
 
 /**

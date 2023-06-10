@@ -30,7 +30,7 @@ unsigned long startupTime = 0;
 void connectToLocalNetwork(void)
 {
     // START WIFI
-    WiFi.mode(WIFI_AP_STA);
+    WiFi.mode(WIFI_STA);
 
     WiFi.begin(wifi_network_ssid, wifi_network_password);
     Serial.println("\n[*] Connecting to WiFi Network");
@@ -41,6 +41,9 @@ void connectToLocalNetwork(void)
         statusBlink(CRGB::Red, 2);
         delay(250);
     }
+
+    Serial.print("\n[*] Connected to WiFi Network with IP: ");
+    Serial.println(WiFi.localIP());
 
     // NTP time
     configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);

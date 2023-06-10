@@ -1,0 +1,3 @@
+[submodule "lib/ESPAsyncWebSrv"]
+	path = lib/ESPAsyncWebSrv
+	url = https://github.com/dvarrel/ESPAsyncWebSrv.git

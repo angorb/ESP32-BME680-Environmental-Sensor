@@ -21,14 +21,28 @@
 
 void initLeds(void);
 void statusBlink(unsigned long color, uint16_t num);
+void setLedIdleColor(unsigned long color);
+unsigned long getLedIdleColor();
 void ledHappyDance(uint16_t num);
 
 CRGB leds[NUM_LEDS];
+unsigned long idleColor;
 
 void initLeds(void)
 {
     FastLED.addLeds<CHIPSET, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
     FastLED.setBrightness(BRIGHTNESS);
+    setLedIdleColor(CRGB::Black);
+}
+
+void setLedIdleColor(unsigned long color)
+{
+    idleColor = color;
+}
+
+unsigned long getLedIdleColor()
+{
+    return idleColor;
 }
 
 void statusBlink(unsigned long color, uint16_t num)
@@ -38,7 +52,7 @@ void statusBlink(unsigned long color, uint16_t num)
         leds[0] = color;
         FastLED.show();
         delay(200);
-        leds[0] = CRGB::Black;
+        leds[0] = getLedIdleColor();
         FastLED.show();
         delay(200);
     }
