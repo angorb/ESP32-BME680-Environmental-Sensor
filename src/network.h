@@ -21,6 +21,7 @@ void connectToLocalNetwork(void);
 
 const char *wifi_network_ssid = NETWORK_SSID;
 const char *wifi_network_password = NETWORK_PASSWORD;
+const char *wifi_hostname = "bme680.local";
 
 const char *ntpServer = "pool.ntp.org";
 const long gmtOffset_sec = 0;
@@ -31,6 +32,9 @@ void connectToLocalNetwork(void)
 {
     // START WIFI
     WiFi.mode(WIFI_STA);
+
+    WiFi.config(INADDR_NONE, INADDR_NONE, INADDR_NONE, INADDR_NONE);
+    WiFi.setHostname(wifi_hostname); // define hostname
 
     WiFi.begin(wifi_network_ssid, wifi_network_password);
     Serial.println("\n[*] Connecting to WiFi Network");

@@ -15,6 +15,7 @@
 #include "logger.h"
 #include "sensor.h"
 #include "webserver.h"
+#include "battery.h"
 
 // CONFIG
 #include "wifi_config.h"
@@ -31,6 +32,8 @@ void setup()
 
     initLeds();
 
+    initFuelGauge();
+
     // connect to wifi network or blink error
     connectToLocalNetwork();
 
@@ -44,6 +47,7 @@ void loop()
     if (iaqSensor.run())
     {
         sensorDataJson = updateSensorData();
+        fuelGaugeJson = updateFuelGaugeData();
         if (SENSOR_DATA_TO_SERIAL)
         {
             Serial.println(sensorDataJson);
