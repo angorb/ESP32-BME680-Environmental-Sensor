@@ -1,3 +1,13 @@
+/**
+ * @file webserver.h
+ * @author nick brogna (nick@wemakepretty.com)
+ * @brief
+ * @version 0.1
+ * @date 2023-06-11
+ *
+ * @copyright Copyright (c) 2023
+ *
+ */
 #ifndef FILE_WEBSERVER_H_
 #define FILE_WEBSERVER_H_
 

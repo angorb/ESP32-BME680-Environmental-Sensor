@@ -1,6 +1,6 @@
 /**
  * @file sensor.h
- * @author your name (you@domain.com)
+ * @author nick brogna (nick@wemakepretty.com)
  * @brief
  * @version 0.1
  * @date 2023-06-10

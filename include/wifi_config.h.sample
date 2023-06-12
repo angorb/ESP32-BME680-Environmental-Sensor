@@ -1,0 +1,4 @@
+
+#define NETWORK_SSID "your_ssid"
+
+#define NETWORK_PASSWORD "your_password"
