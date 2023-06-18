@@ -38,7 +38,7 @@ void setupWebServer()
     server.on("/power", HTTP_GET, [](AsyncWebServerRequest *request)
               { request->send(200, "application/json", fuelGaugeJson); });
     server.on("/files", HTTP_GET, [](AsyncWebServerRequest *request)
-              { request->send(200, "application/json", fuelGaugeJson); });
+              { request->send(200, "application/json", filesystemDataJson); });
 
     // ADD WEB SERVER EVENT HANDLERS
     server.onNotFound(notFound);
