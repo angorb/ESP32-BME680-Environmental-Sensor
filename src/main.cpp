@@ -40,6 +40,8 @@ void setup()
     setupWebServer();
 
     initBsecSensor();
+
+    setupLogging();
 }
 
 void loop()
@@ -53,7 +55,8 @@ void loop()
             Serial.println(sensorDataJson);
             statusBlink(CRGB::SeaGreen, 1);
         }
-        // logSdCard(); // FIXME
+        logSdCard(); // FIXME
+        filesystemDataJson = updateFilesystemData();
     }
     else
     {
